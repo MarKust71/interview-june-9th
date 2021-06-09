@@ -1,0 +1,38 @@
+.square {
+  height: 90px;
+  width: 120px;
+  background-color: aquamarine;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+
+  cursor: pointer;
+}
+
+.treasure {
+  background-color: rgba(193,1,0,255);
+  color: #fff;
+}
+
+.proximity-0 {
+  background-color: #fff;
+  color: #000;
+}
+
+.proximity-1 {
+  background-color: rgba(253,232,216,255);
+  color: #000;
+}
+
+.proximity-2 {
+  background-color: rgba(250,191,143,255);
+  color: #000;
+}
+
+.proximity-3 {
+  background-color: rgba(227,108,10,255);
+  color: #000;
+}
