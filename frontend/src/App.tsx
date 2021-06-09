@@ -1,10 +1,7 @@
 import React from 'react';
-import { LayoutContainer } from 'ui/layout/layoutContainer/LayoutContainer';
+
+import { Root } from 'app/root/Root';
 
 export const App = () => {
-  return (
-    <LayoutContainer>
-      <div>Interview</div>
-    </LayoutContainer>
-  );
+  return <Root />;
 };
