@@ -5,6 +5,6 @@ import { SquareProps, SquareStatus } from './Square.types';
 import './Square.css';
 import { getStyleForSquare } from 'helpers/getStyleForSquare';
 
-export const Square: React.FC<SquareProps> = ({ status = SquareStatus.PROXIMITY_0 }) => {
-  return <div className={`square ${getStyleForSquare(status)}`}>{status === -1 ? 'T' : status}</div>;
+export const Square: React.FC<SquareProps> = ({ status }) => {
+  return <div className={`square ${getStyleForSquare(status)}`}>{status === SquareStatus.TREASURE ? 'T' : status}</div>;
 };

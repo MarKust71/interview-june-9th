@@ -1,5 +1,10 @@
 export type SquareProps = {
-  status?: SquareStatus;
+  status: SquareStatus;
+};
+
+export type SquareType = SquareProps & {
+  row: number;
+  column: number;
 };
 
 export enum SquareStatus {
