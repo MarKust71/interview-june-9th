@@ -8,6 +8,7 @@ export const emptyPlayBoard = (): SquareType[] => {
         status: SquareStatus.PROXIMITY_0,
         row,
         column,
+        revealed: false,
       });
     }
   }

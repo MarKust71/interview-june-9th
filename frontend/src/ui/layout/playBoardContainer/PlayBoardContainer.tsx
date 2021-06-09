@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Square } from 'ui/square/Square';
+import { flipSquare, initPlayBoard } from 'actions/gameActions';
+import { GameState } from 'reducers/gameReducer.types';
 
 import { PlayBoardContainerProps } from './PlayBoardContainer.types';
 import './PlayBoardContainer.css';
-import { markProximity } from 'helpers/markProximity';
-import { SquareType } from 'ui/square/Square.types';
 
 export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
-  const [playBoard, setPlayBoard] = useState<SquareType[]>([]);
+  const dispatch = useDispatch();
+
+  const playBoard = useSelector<GameState, GameState['playBoard']>((state) => state.playBoard);
 
   useEffect(() => {
-    setPlayBoard(
-      markProximity().sort((a, b) => {
-        return parseInt(`${a.row}${a.column}`) - parseInt(`${b.row}${b.column}`);
-      })
-    );
+    dispatch(initPlayBoard());
   }, []);
+
+  const handleClick = (index: number) => {
+    dispatch(flipSquare(index));
+  };
 
   return (
     <div className="playboard-container">
-      {playBoard.map((square) => (
-        <Square status={square.status} />
+      {playBoard?.map((square, index) => (
+        <Square status={square.status} onClick={() => handleClick(index)} revealed={square.revealed} />
       ))}
     </div>
   );

@@ -1,5 +1,6 @@
-import { drawTreasureSquares } from './drawTreasureSquares';
 import { SquareStatus, SquareType } from 'ui/square/Square.types';
+
+import { drawTreasureSquares } from './drawTreasureSquares';
 
 export const markProximity = () => {
   const newPlayBoard = [...drawTreasureSquares()];
