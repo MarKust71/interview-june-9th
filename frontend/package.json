@@ -21,12 +21,18 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "plop": "plop",
+    "eslint:fix": "eslint --fix .",
     "prettier:fix": "prettier --write ."
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "ignorePatterns": [
+      "*.hbs",
+      "plop-templates/**/*.hbs"
     ]
   },
   "browserslist": {
@@ -47,5 +53,9 @@
     "tabWidth": 2,
     "semi": true,
     "printWidth": 120
+  },
+  "devDependencies": {
+    "inquirer-directory": "^2.2.0",
+    "plop": "^2.7.4"
   }
 }
