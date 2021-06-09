@@ -1,4 +1,5 @@
 import { SquareStatus } from 'ui/square/Square.types';
+
 import { emptyPlayBoard } from './emptyPlayBoard';
 
 export const drawTreasureSquares = () => {
