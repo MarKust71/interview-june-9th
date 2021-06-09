@@ -11,10 +11,6 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
   const [playBoard, setPlayBoard] = useState<SquareType[]>([]);
 
   useEffect(() => {
-    // console.log(playBoard);
-  }, [playBoard]);
-
-  useEffect(() => {
     setPlayBoard(
       markProximity().sort((a, b) => {
         return parseInt(`${a.row}${a.column}`) - parseInt(`${b.row}${b.column}`);
