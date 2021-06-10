@@ -5,7 +5,7 @@ import { getStyleForSquare } from 'helpers/getStyleForSquare';
 import { SquareProps, SquareStatus } from './Square.types';
 import './Square.css';
 
-export const Square: React.FC<SquareProps> = ({ status, onClick = () => null, revealed }) => {
+export const Square: React.FC<SquareProps> = ({ status, onClick = () => null, revealed, marked }) => {
   return (
     <div className={`card-grid-box no-flip`}>
       <div
@@ -14,7 +14,10 @@ export const Square: React.FC<SquareProps> = ({ status, onClick = () => null, re
       >
         {status === SquareStatus.TREASURE ? 'T' : status}
       </div>
-      <div className={`card-box-back ${revealed ? 'flip' : 'no-flip'}`} onClick={() => onClick(0)} />
+      <div
+        className={`card-box-back ${revealed ? 'flip' : 'no-flip'} ${marked ? 'marked' : ''}`}
+        onClick={() => onClick(0)}
+      />
     </div>
   );
 };

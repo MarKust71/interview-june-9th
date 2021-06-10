@@ -2,6 +2,7 @@ export type SquareProps = {
   status: SquareStatus;
   onClick?: (index: number) => void;
   revealed: boolean;
+  marked: boolean;
 };
 
 export type SquareType = SquareProps & {
