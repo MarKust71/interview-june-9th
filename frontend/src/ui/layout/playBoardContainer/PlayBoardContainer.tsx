@@ -78,13 +78,12 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
       <div className="player-name-box">
         <h1 className="player-name-label">Player:</h1>
         {!gameIsPending ? (
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className="player-name-input" style={{ backgroundColor: '#fff' }}>
             <Form.Control
               as="input"
               type="text"
               size="lg"
               placeholder="Enter your name"
-              className="player-name-input"
               isInvalid={error}
               onChange={handleChange}
             />
@@ -103,8 +102,13 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
           />
         ))}
       </div>
-      <div>
-        <h2>{`Your current score: ${gameScore}`}</h2>
+      <div className="player-name-box" style={{ marginBottom: 0, marginTop: 8 }}>
+        <h2 className="player-name-label" style={{ whiteSpace: 'nowrap' }}>
+          Your current score:
+        </h2>
+        <h2 className="player-name-input" style={{ textAlign: 'center' }}>
+          {gameScore}
+        </h2>
       </div>
     </div>
   );
