@@ -4,3 +4,23 @@
   grid-column-gap: 5px;
   grid-row-gap: 5px;
 }
+
+.player-name-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.player-name-label {
+  padding: 0;
+  margin: 0;
+}
+
+.player-name-input {
+  width: 100%;
+  margin: 0 0 0 12px;
+  padding: 0 12px;
+  background-color: #ccc;
+}

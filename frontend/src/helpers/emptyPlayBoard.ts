@@ -9,6 +9,7 @@ export const emptyPlayBoard = (): SquareType[] => {
         row,
         column,
         revealed: false,
+        marked: false,
       });
     }
   }
