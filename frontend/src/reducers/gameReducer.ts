@@ -6,6 +6,8 @@ const initialState: GameState = {
   gameScore: 0,
   playerName: '',
   gameIsPending: false,
+  gameIsOver: false,
+  scoreBoard: [],
 };
 
 export const gameReducer = (state: GameState = initialState, action: GameAction) => {
@@ -57,6 +59,19 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
 
     case GameActionType.UPDATE_PLAYER_NAME: {
       return { ...state, playerName: action.payload.playerName };
+    }
+
+    case GameActionType.GAME_OVER: {
+      return { ...state, gameIsOver: true };
+    }
+
+    case GameActionType.ADD_SCORE: {
+      console.log('jestem');
+      const newScoreBoard = state.scoreBoard ? [...state.scoreBoard] : [];
+      const newScore = action.payload.score;
+      if (newScore) newScoreBoard.push(newScore);
+      newScoreBoard.sort((a, b) => b.score - a.score);
+      return { ...state, scoreBoard: [...newScoreBoard] };
     }
 
     default:

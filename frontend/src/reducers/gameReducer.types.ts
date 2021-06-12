@@ -6,6 +6,9 @@ export type GameState = {
   gameScore?: number;
   playerName?: string;
   gameIsPending?: boolean;
+  gameIsOver?: boolean;
+  scoreBoard?: ScoreBoardItem[];
+  score?: ScoreBoardItem;
 };
 
 export type GameAction = {
@@ -20,4 +23,11 @@ export enum GameActionType {
   INCREASE_SCORE = 'INCREASE_SCORE',
   TOGGLE_GAME_PENDING = 'TOGGLE_GAME_PENDING',
   UPDATE_PLAYER_NAME = 'UPDATE_PLAYER_NAME',
+  GAME_OVER = 'GAME_OVER',
+  ADD_SCORE = 'ADD_SCORE',
 }
+
+export type ScoreBoardItem = {
+  name: string;
+  score: number;
+};
