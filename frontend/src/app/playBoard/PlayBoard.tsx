@@ -19,6 +19,8 @@ import { addScoreService, readScoresService } from 'api/readScoresService';
 import { PlayBoardProps } from './PlayBoard.types';
 
 import './PlayBoard.css';
+import { checkMarkedSquaresService } from '../../api/readPlayBoardService';
+import { CheckSquare } from '../../ui/square/Square.types';
 
 export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   const dispatch = useDispatch();
@@ -56,24 +58,26 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   };
 
   useEffect(() => {
-    // dispatch(initPlayBoard());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (playBoard) {
       const markedCount = playBoard.reduce(
         (accumulator, currentValue) => accumulator + (currentValue.marked ? 1 : 0),
-        0,
+        0
       );
       if (markedCount === 3) {
-        playBoard.forEach((square, index) => {
-          if (square.marked) {
-            dispatch(markSquare(index));
-            dispatch(flipSquare(index));
-          }
+        const markedSquaresIndexes: number[] = [];
+        playBoard.map((square) => {
+          if (square.marked) markedSquaresIndexes.push(square.row * 5 + square.column);
+          return null;
         });
-        dispatch(increaseScore());
+        const checkMarkedSquares = async () => {
+          const markedSquares = await checkMarkedSquaresService(markedSquaresIndexes);
+          markedSquares.forEach((item: CheckSquare) => {
+            dispatch(markSquare(item.index));
+            dispatch(flipSquare(item.index));
+          });
+          dispatch(increaseScore());
+        };
+        checkMarkedSquares();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,11 +90,11 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
 
   useEffect(() => {
     if (gameIsOver && playerName && gameScore) {
-      // dispatch(addScore({ name: playerName, score: gameScore }));
       const addNewScoreToScoreBoard = async () => {
         await addScoreService({ name: playerName, score: gameScore });
         const newScoreBoard = await readScoresService();
         dispatch(updateScoreBoard(newScoreBoard));
+        dispatch(updatePlayerName(''));
       };
       addNewScoreToScoreBoard();
     }

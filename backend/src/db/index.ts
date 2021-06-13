@@ -1,5 +1,5 @@
 import { ScoreBoardItem } from '../model/scoreBoard.model';
-import { SquareStatus, SquareType } from '../model/playBoard.model';
+import { CheckSquare, SquareStatus, SquareType } from '../model/playBoard.model';
 
 const scoreBoard: ScoreBoardItem[] = [];
 const playBoard: SquareType[] = [];
@@ -88,7 +88,13 @@ export const db = () => {
     return [...playBoard];
   };
 
-  return { write, read, add, empty, init };
+  const check = (data: number[]) => {
+    const response: CheckSquare[] = [];
+    data.map((item) => response.push({ index: item, status: playBoard[item].status }));
+    return [...response];
+  };
+
+  return { write, read, add, empty, init, check };
 };
 
 const updateProximity = (

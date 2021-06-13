@@ -17,3 +17,8 @@ export enum SquareStatus {
   PROXIMITY_2 = 2,
   PROXIMITY_3 = 3,
 }
+
+export type CheckSquare = {
+  index: number;
+  status: SquareStatus;
+};

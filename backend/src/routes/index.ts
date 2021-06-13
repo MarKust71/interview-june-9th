@@ -5,7 +5,7 @@ import {
   readScoreBoardHandler,
   writeScoreBoardHandler,
 } from '../controller/scoreboard.controller';
-import { initPlayBoardHandler } from '../controller/playboard.controller';
+import { checkMarkedSquaresHandler, initPlayBoardHandler } from '../controller/playboard.controller';
 
 export const routes = (app: Express) => {
   app.get('/api', (req, res) => res.send('Express + TypeScript Server'));
@@ -17,4 +17,6 @@ export const routes = (app: Express) => {
   app.post('/api/addscore', addScoreBoardHandler);
 
   app.get('/api/playboard', (req, res) => res.send(JSON.stringify(initPlayBoardHandler())));
+
+  app.post('/api/playboard', checkMarkedSquaresHandler);
 };
