@@ -1,5 +1,3 @@
-import { markProximity } from 'helpers/markProximity';
-
 import { GameAction, GameActionType, GameState } from './gameReducer.types';
 
 const initialState: GameState = {
@@ -14,10 +12,9 @@ const initialState: GameState = {
 export const gameReducer = (state: GameState = initialState, action: GameAction) => {
   switch (action.type) {
     case GameActionType.INIT_PLAYBOARD: {
-      const newPlayBoard = markProximity().sort((a, b) => {
-        return parseInt(`${a.row}${a.column}`) - parseInt(`${b.row}${b.column}`);
-      });
-      return { ...state, playBoard: [...newPlayBoard] };
+      if (!action.payload.playBoard) return state;
+
+      return { ...state, playBoard: [...action.payload.playBoard] };
     }
 
     case GameActionType.FLIP_SQUARE: {
