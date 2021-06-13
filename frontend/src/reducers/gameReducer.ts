@@ -20,7 +20,8 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
     case GameActionType.INCREASE_SCORE: {
       if (state.gameScore === undefined) return state;
 
-      return { ...state, gameScore: state.gameScore + 1 };
+      const gameScore = action.payload.gameScore || 0;
+      return { ...state, gameScore: state.gameScore + gameScore + 1 };
     }
 
     case GameActionType.FLIP_SQUARES: {

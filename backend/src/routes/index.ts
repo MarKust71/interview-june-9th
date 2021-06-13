@@ -18,5 +18,5 @@ export const routes = (app: Express) => {
 
   app.get('/api/playboard', (req, res) => res.send(JSON.stringify(initPlayBoardHandler())));
 
-  app.post('/api/playboard', checkMarkedSquaresHandler);
+  app.post('/api/playboard/:mode', checkMarkedSquaresHandler);
 };

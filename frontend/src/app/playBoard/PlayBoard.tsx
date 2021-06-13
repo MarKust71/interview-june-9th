@@ -7,6 +7,7 @@ import { GameState } from 'reducers/gameReducer.types';
 import {
   flipSquares,
   increaseScore,
+  initPlayBoard,
   markSquare,
   setGameIsOver,
   toggleGamePending,
@@ -15,13 +16,17 @@ import {
 } from 'actions/gameActions';
 import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
 import { addScoreService, scoresService } from 'api/scoresService';
-import { checkMarkedSquaresService } from 'api/playBoardService';
+import {
+  checkMarkedSquaresService,
+  checkPlayerHasPendingGameService,
+  savePlayBoardSnapshotService,
+} from 'api/playBoardService';
 import { CheckSquare } from 'ui/square/Square.types';
+import { PlayBoardSnapshot } from 'api/scoresService.types';
 
 import { PlayBoardProps } from './PlayBoard.types';
 
 import './PlayBoard.css';
-import { PlayBoardSnapshot } from '../../api/scoresService.types';
 
 export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   const dispatch = useDispatch();
@@ -40,6 +45,15 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
       setError(true);
       return;
     }
+
+    const checkPlayerHasPendingGame = async () => {
+      const snapshot = await checkPlayerHasPendingGameService(playerName);
+      if (snapshot.length) {
+        dispatch(initPlayBoard([...snapshot[0].playBoard]));
+        dispatch(increaseScore(snapshot[0].score - 1));
+      }
+    };
+    checkPlayerHasPendingGame();
 
     dispatch(toggleGamePending());
   };
@@ -66,25 +80,32 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
       );
 
       if (markedCount === 3) {
-        const playBoardSnapshot: PlayBoardSnapshot = {
-          name: playerName || '',
-          playBoard: [],
-          marked: [],
-          score: gameScore || 0,
-        };
+        const checkedSquares: number[] = [];
         playBoard.map((square) => {
-          playBoardSnapshot.playBoard.push(square);
-          if (square.marked) playBoardSnapshot.marked.push(square.row * 5 + square.column);
+          if (square.marked) checkedSquares.push(square.row * 5 + square.column);
           return null;
         });
 
         const checkMarkedSquares = async () => {
-          const markedSquares = await checkMarkedSquaresService(playBoardSnapshot);
+          const markedSquares = await checkMarkedSquaresService(checkedSquares);
 
           markedSquares.forEach((item: CheckSquare) => {
             dispatch(flipSquares(item.index, item.status));
           });
-          dispatch(increaseScore());
+          dispatch(increaseScore(0));
+
+          const playBoardSnapshot: PlayBoardSnapshot = {
+            name: playerName || '',
+            playBoard: [],
+            marked: [],
+            score: gameScore || 0,
+          };
+          playBoard.map((square) => {
+            playBoardSnapshot.playBoard.push(square);
+            if (square.marked) playBoardSnapshot.marked.push(square.row * 5 + square.column);
+            return null;
+          });
+          await savePlayBoardSnapshotService(playBoardSnapshot);
         };
         checkMarkedSquares();
       }

@@ -103,13 +103,18 @@ export const db = () => {
     newSnapshots.map((snapshot) => snapshots.push(snapshot));
   };
 
-  const deleteUserSnapshot = (user: string) => {
-    const newSnapshots = snapshots.filter((snapshot) => snapshot.name !== user);
+  const deletePlayerSnapshot = (playerName: string) => {
+    const newSnapshots = snapshots.filter((snapshot) => snapshot.name !== playerName);
     snapshots.length = 0;
     newSnapshots.map((snapshot) => snapshots.push(snapshot));
   };
 
-  return { write, read, add, empty, init, check, saveSnapshot, deleteUserSnapshot };
+  const getPlayerSnapshot = (playerName: string) => {
+    const playerSnapshot = snapshots.filter((snapshot) => snapshot.name === playerName);
+    return [...playerSnapshot];
+  };
+
+  return { write, read, add, empty, init, check, saveSnapshot, deletePlayerSnapshot, getPlayerSnapshot };
 };
 
 const updateProximity = (

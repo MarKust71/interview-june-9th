@@ -16,9 +16,9 @@ export const markSquare = (squareIndex: number): GameAction => ({
   payload: { squareIndex },
 });
 
-export const increaseScore = (): GameAction => ({
+export const increaseScore = (gameScore: number): GameAction => ({
   type: GameActionType.INCREASE_SCORE,
-  payload: {},
+  payload: { gameScore },
 });
 
 export const toggleGamePending = (): GameAction => ({
