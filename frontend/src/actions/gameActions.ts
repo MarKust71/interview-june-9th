@@ -1,8 +1,9 @@
 import { GameAction, GameActionType, ScoreBoardItem } from 'reducers/gameReducer.types';
+import { SquareType } from 'ui/square/Square.types';
 
-export const initPlayBoard = (): GameAction => ({
+export const initPlayBoard = (playBoard: SquareType[]): GameAction => ({
   type: GameActionType.INIT_PLAYBOARD,
-  payload: {},
+  payload: { playBoard },
 });
 
 export const flipSquare = (squareIndex: number): GameAction => ({

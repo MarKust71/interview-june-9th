@@ -7,7 +7,6 @@ import { GameState } from 'reducers/gameReducer.types';
 import {
   flipSquare,
   increaseScore,
-  initPlayBoard,
   markSquare,
   setGameIsOver,
   toggleGamePending,
@@ -15,19 +14,19 @@ import {
   updateScoreBoard,
 } from 'actions/gameActions';
 import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
+import { addScoreService, readScoresService } from 'api/readScoresService';
 
 import { PlayBoardProps } from './PlayBoard.types';
-import './PlayBoard.css';
-import { addScoreService, readScoresService } from '../../api/services';
 
-export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
+import './PlayBoard.css';
+
+export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   const dispatch = useDispatch();
 
   const [error, setError] = useState(false);
 
   const gameIsPending = useSelector<GameState, GameState['gameIsPending']>((state) => state.gameIsPending);
   const playerName = useSelector<GameState, GameState['playerName']>((state) => state.playerName);
-  const playBoard = useSelector<GameState, GameState['playBoard']>((state) => state.playBoard);
   const gameScore = useSelector<GameState, GameState['gameScore']>((state) => state.gameScore);
   const gameIsOver = useSelector<GameState, GameState['gameIsOver']>((state) => state.gameIsOver);
 
@@ -57,7 +56,7 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
   };
 
   useEffect(() => {
-    dispatch(initPlayBoard());
+    // dispatch(initPlayBoard());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,7 +64,7 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
     if (playBoard) {
       const markedCount = playBoard.reduce(
         (accumulator, currentValue) => accumulator + (currentValue.marked ? 1 : 0),
-        0
+        0,
       );
       if (markedCount === 3) {
         playBoard.forEach((square, index) => {

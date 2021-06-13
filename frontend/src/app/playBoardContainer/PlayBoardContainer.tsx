@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GameState } from 'reducers/gameReducer.types';
 import { PlayBoard } from 'app/playBoard/PlayBoard';
 import { ScoreBoard } from 'app/scoreBoard/ScoreBoard';
-
-import { PlayBoardContainerProps } from './PlayBoardContainer.types';
+import { readScoresService } from 'api/readScoresService';
+import { initPlayBoard, updateScoreBoard } from 'actions/gameActions';
+import { readPlayBoardService } from 'api/readPlayBoardService';
 
 import './PlayBoardContainer.css';
-import { readScoresService } from 'api/services';
-import { updateScoreBoard } from 'actions/gameActions';
 
-export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
+export const PlayBoardContainer = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const gameIsOver = useSelector<GameState, GameState['gameIsOver']>((state) => state.gameIsOver);
   const scoreBoard = useSelector<GameState, GameState['scoreBoard']>((state) => state.scoreBoard);
+  const playBoard = useSelector<GameState, GameState['playBoard']>((state) => state.playBoard);
 
   useEffect(() => {
     const reloadScoreBoard = async () => {
@@ -23,13 +23,20 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
       dispatch(updateScoreBoard(newScoreBoard));
     };
     reloadScoreBoard();
+
+    const reloadPlayBoard = async () => {
+      const newPlayBoard = await readPlayBoardService();
+      dispatch(initPlayBoard([...newPlayBoard]));
+    };
+    reloadPlayBoard();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <div className={`playboard-container ${gameIsOver ? 'game-over' : ''}`}>
-        <PlayBoard />
+        <PlayBoard playBoard={playBoard} />
       </div>
       <div className={`playboard-container game-over-delay ${gameIsOver ? '' : 'game-over'}`}>
         <ScoreBoard scoreBoard={scoreBoard} />

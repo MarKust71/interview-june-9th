@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { ScoreBoardItem } from '../model';
+import { ScoreBoardItem } from '../model/scoreBoard.model';
 
 export const readScoreBoard = () => {
   return db().read();

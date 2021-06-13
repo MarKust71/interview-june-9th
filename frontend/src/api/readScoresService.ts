@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { ScoreBoardItem } from '../reducers/gameReducer.types';
 
 export const readScoresService = async () => {
