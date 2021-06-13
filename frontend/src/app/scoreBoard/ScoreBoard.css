@@ -1,5 +1,9 @@
+.scoreboard-container {
+  width: 400px;
+  min-width: 400px;
+}
+
 .scoreboard-header {
-  padding-bottom: 1em;
 }
 
 .scoreboard-li {
@@ -7,5 +11,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1em;
+  padding-bottom: 0.5em;
+}
+
+li {
+  font-size: 1.5em;
 }

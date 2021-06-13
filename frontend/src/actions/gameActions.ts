@@ -35,7 +35,7 @@ export const setGameIsOver = (): GameAction => ({
   payload: {},
 });
 
-export const addScore = (score: ScoreBoardItem): GameAction => ({
-  type: GameActionType.ADD_SCORE,
-  payload: { score },
+export const updateScoreBoard = (scoreBoard: ScoreBoardItem[]): GameAction => ({
+  type: GameActionType.UPDATE_SCOREBOARD,
+  payload: { scoreBoard },
 });

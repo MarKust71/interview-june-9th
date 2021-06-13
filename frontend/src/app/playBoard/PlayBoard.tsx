@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Square } from 'ui/square/Square';
 import { GameState } from 'reducers/gameReducer.types';
 import {
-  addScore,
   flipSquare,
   increaseScore,
   initPlayBoard,
@@ -13,11 +12,13 @@ import {
   setGameIsOver,
   toggleGamePending,
   updatePlayerName,
+  updateScoreBoard,
 } from 'actions/gameActions';
 import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
 
 import { PlayBoardProps } from './PlayBoard.types';
 import './PlayBoard.css';
+import { addScoreService, readScoresService } from '../../api/services';
 
 export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
   const dispatch = useDispatch();
@@ -85,7 +86,15 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
   }, [gameScore]);
 
   useEffect(() => {
-    if (gameIsOver && playerName && gameScore) dispatch(addScore({ name: playerName, score: gameScore }));
+    if (gameIsOver && playerName && gameScore) {
+      // dispatch(addScore({ name: playerName, score: gameScore }));
+      const addNewScoreToScoreBoard = async () => {
+        await addScoreService({ name: playerName, score: gameScore });
+        const newScoreBoard = await readScoresService();
+        dispatch(updateScoreBoard(newScoreBoard));
+      };
+      addNewScoreToScoreBoard();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameIsOver]);
 

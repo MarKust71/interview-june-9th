@@ -1,8 +1,6 @@
-import { addScoreService, readScoresService } from 'api/services';
-
 import { markProximity } from 'helpers/markProximity';
 
-import { GameAction, GameActionType, GameState, ScoreBoardItem } from './gameReducer.types';
+import { GameAction, GameActionType, GameState } from './gameReducer.types';
 
 const initialState: GameState = {
   playBoard: [],
@@ -68,25 +66,8 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
       return { ...state, gameIsOver: true };
     }
 
-    case GameActionType.ADD_SCORE: {
-      const newScore = action.payload.score;
-
-      if (!newScore) return state;
-
-      const updateScoreBoard = async () => {
-        try {
-          await addScoreService(newScore);
-          const newScoreBoard = await readScoresService();
-          newScoreBoard.sort((a: ScoreBoardItem, b: ScoreBoardItem) => a.score - b.score);
-          return { ...state, scoreBoard: [...newScoreBoard] };
-        } catch (error) {
-          console.log('GameActionType.ADD_SCORE.error:', error.message);
-          return state;
-        }
-      };
-      updateScoreBoard();
-
-      return state;
+    case GameActionType.UPDATE_SCOREBOARD: {
+      return { ...state, scoreBoard: action.payload.scoreBoard };
     }
 
     default:
