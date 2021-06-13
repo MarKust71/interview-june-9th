@@ -22,3 +22,10 @@ export type CheckSquare = {
   index: number;
   status: SquareStatus;
 };
+
+export type PlayBoardSnapshot = {
+  marked: number[];
+  name: string;
+  score: number;
+  playBoard: SquareType[];
+};

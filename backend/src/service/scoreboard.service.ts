@@ -10,5 +10,6 @@ export const writeScoreBoard = (data: ScoreBoardItem[]) => {
 };
 
 export const addScoreBoard = (data: ScoreBoardItem) => {
+  db().deleteUserSnapshot(data.name);
   return db().add(data);
 };

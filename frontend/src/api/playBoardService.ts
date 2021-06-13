@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { PlayBoardSnapshot } from './scoresService.types';
 
-export const readPlayBoardService = async () => {
+export const playBoardService = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/playboard`);
     return response.data;
@@ -9,7 +10,7 @@ export const readPlayBoardService = async () => {
   }
 };
 
-export const checkMarkedSquaresService = async (data: number[]) => {
+export const checkMarkedSquaresService = async (data: PlayBoardSnapshot) => {
   try {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/playboard`, data);
     return response.data;

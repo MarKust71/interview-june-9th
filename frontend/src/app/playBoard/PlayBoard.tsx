@@ -14,13 +14,14 @@ import {
   updateScoreBoard,
 } from 'actions/gameActions';
 import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
-import { addScoreService, readScoresService } from 'api/readScoresService';
-import { checkMarkedSquaresService } from 'api/readPlayBoardService';
+import { addScoreService, scoresService } from 'api/scoresService';
+import { checkMarkedSquaresService } from 'api/playBoardService';
 import { CheckSquare } from 'ui/square/Square.types';
 
 import { PlayBoardProps } from './PlayBoard.types';
 
 import './PlayBoard.css';
+import { PlayBoardSnapshot } from '../../api/scoresService.types';
 
 export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   const dispatch = useDispatch();
@@ -65,14 +66,20 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
       );
 
       if (markedCount === 3) {
-        const markedSquaresIndexes: number[] = [];
+        const playBoardSnapshot: PlayBoardSnapshot = {
+          name: playerName || '',
+          playBoard: [],
+          marked: [],
+          score: gameScore || 0,
+        };
         playBoard.map((square) => {
-          if (square.marked) markedSquaresIndexes.push(square.row * 5 + square.column);
+          playBoardSnapshot.playBoard.push(square);
+          if (square.marked) playBoardSnapshot.marked.push(square.row * 5 + square.column);
           return null;
         });
 
         const checkMarkedSquares = async () => {
-          const markedSquares = await checkMarkedSquaresService(markedSquaresIndexes);
+          const markedSquares = await checkMarkedSquaresService(playBoardSnapshot);
 
           markedSquares.forEach((item: CheckSquare) => {
             dispatch(flipSquares(item.index, item.status));
@@ -94,7 +101,7 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
     if (gameIsOver && playerName && gameScore) {
       const addNewScoreToScoreBoard = async () => {
         await addScoreService({ name: playerName, score: gameScore });
-        const newScoreBoard = await readScoresService();
+        const newScoreBoard = await scoresService();
         dispatch(updateScoreBoard(newScoreBoard));
         dispatch(updatePlayerName(''));
       };

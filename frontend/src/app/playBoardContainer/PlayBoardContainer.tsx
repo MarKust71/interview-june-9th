@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GameState } from 'reducers/gameReducer.types';
 import { PlayBoard } from 'app/playBoard/PlayBoard';
 import { ScoreBoard } from 'app/scoreBoard/ScoreBoard';
-import { readScoresService } from 'api/readScoresService';
+import { scoresService } from 'api/scoresService';
 import { initPlayBoard, updateScoreBoard } from 'actions/gameActions';
-import { readPlayBoardService } from 'api/readPlayBoardService';
+import { playBoardService } from 'api/playBoardService';
 
 import './PlayBoardContainer.css';
 
@@ -19,13 +19,13 @@ export const PlayBoardContainer = (): JSX.Element => {
 
   useEffect(() => {
     const reloadScoreBoard = async () => {
-      const newScoreBoard = await readScoresService();
+      const newScoreBoard = await scoresService();
       dispatch(updateScoreBoard(newScoreBoard));
     };
     reloadScoreBoard();
 
     const reloadPlayBoard = async () => {
-      const newPlayBoard = await readPlayBoardService();
+      const newPlayBoard = await playBoardService();
       dispatch(initPlayBoard([...newPlayBoard]));
     };
     reloadPlayBoard();

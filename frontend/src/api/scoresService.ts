@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ScoreBoardItem } from '../reducers/gameReducer.types';
 
-export const readScoresService = async () => {
+export const scoresService = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/scoreboard`);
     return response.data;
