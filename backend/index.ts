@@ -1,8 +1,20 @@
 import express from 'express';
-// rest of the code remains same
+import dotenv from 'dotenv';
+import cors from 'cors';
+
+import { log } from './src/logger';
+import { routes } from './src/routes';
+
+dotenv.config();
+
 const app = express();
-const PORT = 8080;
-app.get('/', (req, res) => res.send('Express + TypeScript Server'));
+const PORT = process.env.PORT || 8080;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
+  log.info(`️[server]: Server is running at https://localhost:${PORT}`);
+  routes(app);
 });

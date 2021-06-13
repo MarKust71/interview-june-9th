@@ -1,11 +1,14 @@
-import { GameAction, GameActionType, GameState } from './gameReducer.types';
 import { markProximity } from 'helpers/markProximity';
+
+import { GameAction, GameActionType, GameState } from './gameReducer.types';
 
 const initialState: GameState = {
   playBoard: [],
   gameScore: 0,
   playerName: '',
   gameIsPending: false,
+  gameIsOver: false,
+  scoreBoard: [],
 };
 
 export const gameReducer = (state: GameState = initialState, action: GameAction) => {
@@ -57,6 +60,14 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
 
     case GameActionType.UPDATE_PLAYER_NAME: {
       return { ...state, playerName: action.payload.playerName };
+    }
+
+    case GameActionType.GAME_OVER: {
+      return { ...state, gameIsOver: true };
+    }
+
+    case GameActionType.UPDATE_SCOREBOARD: {
+      return { ...state, scoreBoard: action.payload.scoreBoard };
     }
 
     default:

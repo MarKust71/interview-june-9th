@@ -1,4 +1,4 @@
-import { GameAction, GameActionType } from 'reducers/gameReducer.types';
+import { GameAction, GameActionType, ScoreBoardItem } from 'reducers/gameReducer.types';
 
 export const initPlayBoard = (): GameAction => ({
   type: GameActionType.INIT_PLAYBOARD,
@@ -28,4 +28,14 @@ export const toggleGamePending = (): GameAction => ({
 export const updatePlayerName = (playerName: string): GameAction => ({
   type: GameActionType.UPDATE_PLAYER_NAME,
   payload: { playerName },
+});
+
+export const setGameIsOver = (): GameAction => ({
+  type: GameActionType.GAME_OVER,
+  payload: {},
+});
+
+export const updateScoreBoard = (scoreBoard: ScoreBoardItem[]): GameAction => ({
+  type: GameActionType.UPDATE_SCOREBOARD,
+  payload: { scoreBoard },
 });

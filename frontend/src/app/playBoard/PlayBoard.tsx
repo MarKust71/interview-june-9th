@@ -1,33 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Square } from 'ui/square/Square';
+import { GameState } from 'reducers/gameReducer.types';
 import {
   flipSquare,
   increaseScore,
   initPlayBoard,
   markSquare,
+  setGameIsOver,
   toggleGamePending,
   updatePlayerName,
+  updateScoreBoard,
 } from 'actions/gameActions';
-import { GameState } from 'reducers/gameReducer.types';
+import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
 
-import { PlayBoardContainerProps } from './PlayBoardContainer.types';
-import './PlayBoardContainer.css';
+import { PlayBoardProps } from './PlayBoard.types';
+import './PlayBoard.css';
+import { addScoreService, readScoresService } from '../../api/services';
 
-export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
+export const PlayBoard: React.FC<PlayBoardProps> = ({}) => {
   const dispatch = useDispatch();
 
   const [error, setError] = useState(false);
 
+  const gameIsPending = useSelector<GameState, GameState['gameIsPending']>((state) => state.gameIsPending);
+  const playerName = useSelector<GameState, GameState['playerName']>((state) => state.playerName);
   const playBoard = useSelector<GameState, GameState['playBoard']>((state) => state.playBoard);
   const gameScore = useSelector<GameState, GameState['gameScore']>((state) => state.gameScore);
-  const playerName = useSelector<GameState, GameState['playerName']>((state) => state.playerName);
-  const gameIsPending = useSelector<GameState, GameState['gameIsPending']>((state) => state.gameIsPending);
+  const gameIsOver = useSelector<GameState, GameState['gameIsOver']>((state) => state.gameIsOver);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!playerName) {
+      setError(true);
+      return;
+    }
+
+    dispatch(toggleGamePending());
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    dispatch(updatePlayerName(event.target.value));
+    setError(false);
+  };
+
+  const handleClick = (index: number) => {
+    if (!gameIsPending) {
+      setError(true);
+      return;
+    }
+
+    dispatch(markSquare(index));
+  };
 
   useEffect(() => {
     dispatch(initPlayBoard());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -46,35 +77,29 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
         dispatch(increaseScore());
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playBoard]);
 
-  const handleClick = (index: number) => {
-    if (!gameIsPending) {
-      setError(true);
-      return;
+  useEffect(() => {
+    if (countTreasureRevealed(playBoard) === 3) dispatch(setGameIsOver());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameScore]);
+
+  useEffect(() => {
+    if (gameIsOver && playerName && gameScore) {
+      // dispatch(addScore({ name: playerName, score: gameScore }));
+      const addNewScoreToScoreBoard = async () => {
+        await addScoreService({ name: playerName, score: gameScore });
+        const newScoreBoard = await readScoresService();
+        dispatch(updateScoreBoard(newScoreBoard));
+      };
+      addNewScoreToScoreBoard();
     }
-
-    dispatch(markSquare(index));
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!playerName) {
-      setError(true);
-      return;
-    }
-
-    dispatch(toggleGamePending());
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    dispatch(updatePlayerName(event.target.value));
-    setError(false);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameIsOver]);
 
   return (
-    <div>
+    <>
       <div className="player-name-box">
         <h1 className="player-name-label">Player:</h1>
         {!gameIsPending ? (
@@ -83,7 +108,7 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
               as="input"
               type="text"
               size="lg"
-              placeholder="Enter your name"
+              placeholder={`Enter your name${error ? ' before you start!' : ''}`}
               isInvalid={error}
               onChange={handleChange}
             />
@@ -92,7 +117,7 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
           <h1 className="player-name-input">{playerName}</h1>
         )}
       </div>
-      <div className="playboard-container">
+      <div className="playboard">
         {playBoard?.map((square, index) => (
           <Square
             status={square.status}
@@ -110,6 +135,6 @@ export const PlayBoardContainer: React.FC<PlayBoardContainerProps> = ({}) => {
           {gameScore}
         </h2>
       </div>
-    </div>
+    </>
   );
 };

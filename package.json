@@ -1,0 +1,25 @@
+{
+  "name": "interview-june-9th",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "cd frontend && yarn run start",
+    "backend": "cd backend && yarn run start",
+    "start": "concurrently --kill-others-on-fail \"yarn run frontend\" \"yarn run backend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarKust71/interview-june-9th.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarKust71/interview-june-9th/issues"
+  },
+  "homepage": "https://github.com/MarKust71/interview-june-9th#readme",
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

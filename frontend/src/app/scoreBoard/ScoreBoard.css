@@ -1,0 +1,19 @@
+.scoreboard-container {
+  width: 400px;
+  min-width: 400px;
+}
+
+.scoreboard-header {
+}
+
+.scoreboard-li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5em;
+}
+
+li {
+  font-size: 1.5em;
+}

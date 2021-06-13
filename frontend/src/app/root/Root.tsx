@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LayoutContainer } from 'ui/layout/layoutContainer/LayoutContainer';
-import { PlayBoardContainer } from 'ui/layout/playBoardContainer/PlayBoardContainer';
+import { PlayBoardContainer } from 'app/playBoardContainer/PlayBoardContainer';
 
 import { RootProps } from './Root.types';
 

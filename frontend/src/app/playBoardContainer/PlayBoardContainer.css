@@ -1,0 +1,13 @@
+.playboard-container {
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: all 1s ease;
+}
+
+.game-over {
+  transform: rotateY(90deg);
+}
+
+.game-over-delay {
+  transition-delay: 1s;
+}
