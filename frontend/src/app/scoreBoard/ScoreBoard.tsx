@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import './ScoreBoard.css';
 
 export const ScoreBoard: React.FC<ScoreBoardProps> = ({}) => {
-  const scoreBoard = useSelector<GameState, GameState['scoreBoard']>((state) => state.scoreBoard || []);
+  const scoreBoard = useSelector<GameState, GameState['scoreBoard']>((state) => state.scoreBoard);
 
   return (
     <>

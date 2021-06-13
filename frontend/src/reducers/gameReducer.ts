@@ -1,5 +1,8 @@
-import { GameAction, GameActionType, GameState } from './gameReducer.types';
+import { addScoreService, readScoresService } from 'api/services';
+
 import { markProximity } from 'helpers/markProximity';
+
+import { GameAction, GameActionType, GameState, ScoreBoardItem } from './gameReducer.types';
 
 const initialState: GameState = {
   playBoard: [],
@@ -66,12 +69,24 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
     }
 
     case GameActionType.ADD_SCORE: {
-      console.log('jestem');
-      const newScoreBoard = state.scoreBoard ? [...state.scoreBoard] : [];
       const newScore = action.payload.score;
-      if (newScore) newScoreBoard.push(newScore);
-      newScoreBoard.sort((a, b) => b.score - a.score);
-      return { ...state, scoreBoard: [...newScoreBoard] };
+
+      if (!newScore) return state;
+
+      const updateScoreBoard = async () => {
+        try {
+          await addScoreService(newScore);
+          const newScoreBoard = await readScoresService();
+          newScoreBoard.sort((a: ScoreBoardItem, b: ScoreBoardItem) => a.score - b.score);
+          return { ...state, scoreBoard: [...newScoreBoard] };
+        } catch (error) {
+          console.log('GameActionType.ADD_SCORE.error:', error.message);
+          return state;
+        }
+      };
+      updateScoreBoard();
+
+      return state;
     }
 
     default:
