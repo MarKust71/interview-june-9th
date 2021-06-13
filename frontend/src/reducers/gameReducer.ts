@@ -17,15 +17,23 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
       return { ...state, playBoard: [...action.payload.playBoard] };
     }
 
-    case GameActionType.FLIP_SQUARE: {
-      const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
-      const { squareIndex } = action.payload;
+    case GameActionType.INCREASE_SCORE: {
+      if (state.gameScore === undefined) return state;
 
-      if (squareIndex === undefined) return state;
+      return { ...state, gameScore: state.gameScore + 1 };
+    }
+
+    case GameActionType.FLIP_SQUARES: {
+      const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
+      const { squareIndex, squareStatus } = action.payload;
+
+      if (squareIndex === undefined || squareStatus === undefined) return state;
 
       newPlayBoard[squareIndex] = {
         ...newPlayBoard[squareIndex],
-        revealed: !newPlayBoard[squareIndex].revealed,
+        revealed: true,
+        marked: false,
+        status: squareStatus,
       };
 
       return { ...state, playBoard: [...newPlayBoard] };
@@ -43,12 +51,6 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
       };
 
       return { ...state, playBoard: [...newPlayBoard] };
-    }
-
-    case GameActionType.INCREASE_SCORE: {
-      if (state.gameScore === undefined) return state;
-
-      return { ...state, gameScore: state.gameScore + 1 };
     }
 
     case GameActionType.TOGGLE_GAME_PENDING: {
