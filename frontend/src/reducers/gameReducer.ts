@@ -17,6 +17,32 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
       return { ...state, playBoard: [...action.payload.playBoard] };
     }
 
+    case GameActionType.INCREASE_SCORE: {
+      if (state.gameScore === undefined) return state;
+
+      return { ...state, gameScore: state.gameScore + 1 };
+    }
+
+    case GameActionType.FLIP_SQUARES: {
+      // if (state.gameScore === undefined) return state;
+
+      const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
+      const { squareIndex, squareStatus } = action.payload;
+
+      if (squareIndex === undefined || squareStatus === undefined) return state;
+
+      newPlayBoard[squareIndex] = {
+        ...newPlayBoard[squareIndex],
+        revealed: true,
+        marked: false,
+        status: squareStatus,
+      };
+
+      // return { ...state, playBoard: [...newPlayBoard], gameScore: state.gameScore + 1 };
+      return { ...state, playBoard: [...newPlayBoard] };
+    }
+
+    /*
     case GameActionType.FLIP_SQUARE: {
       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
       const { squareIndex } = action.payload;
@@ -30,6 +56,7 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
 
       return { ...state, playBoard: [...newPlayBoard] };
     }
+*/
 
     case GameActionType.MARK_SQUARE: {
       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
@@ -45,11 +72,22 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
       return { ...state, playBoard: [...newPlayBoard] };
     }
 
-    case GameActionType.INCREASE_SCORE: {
-      if (state.gameScore === undefined) return state;
+    /*
+     case GameActionType.STATUS_SQUARE: {
+       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
+       const { squareIndex, squareStatus } = action.payload;
 
-      return { ...state, gameScore: state.gameScore + 1 };
-    }
+       if (squareIndex === undefined || squareStatus === undefined) return state;
+
+       newPlayBoard[squareIndex] = {
+         ...newPlayBoard[squareIndex],
+         marked: !newPlayBoard[squareIndex].revealed && !newPlayBoard[squareIndex].marked,
+         status: squareStatus,
+       };
+
+       return { ...state, playBoard: [...newPlayBoard] };
+     }
+ */
 
     case GameActionType.TOGGLE_GAME_PENDING: {
       return { ...state, gameIsPending: !state.gameIsPending };

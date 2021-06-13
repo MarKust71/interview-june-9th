@@ -47,6 +47,7 @@ export const db = () => {
   const init = () => {
     // empty the playboard, no treasures, proximity 0
     const newPlayBoard = [...empty()];
+    const emptyPlayBoard = [...newPlayBoard];
 
     // place treasures on the playboard
     const treasureSquares = new Set<number>();
@@ -85,7 +86,7 @@ export const db = () => {
     playBoard.length = 0;
     newPlayBoard.forEach((item) => playBoard.push(item));
 
-    return [...playBoard];
+    return [...emptyPlayBoard];
   };
 
   const check = (data: number[]) => {

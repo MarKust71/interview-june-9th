@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Square } from 'ui/square/Square';
 import { GameState } from 'reducers/gameReducer.types';
 import {
-  flipSquare,
+  flipSquares,
   increaseScore,
   markSquare,
   setGameIsOver,
@@ -15,12 +15,12 @@ import {
 } from 'actions/gameActions';
 import { countTreasureRevealed } from 'helpers/countTreasureRevealed';
 import { addScoreService, readScoresService } from 'api/readScoresService';
+import { checkMarkedSquaresService } from 'api/readPlayBoardService';
+import { CheckSquare } from 'ui/square/Square.types';
 
 import { PlayBoardProps } from './PlayBoard.types';
 
 import './PlayBoard.css';
-import { checkMarkedSquaresService } from '../../api/readPlayBoardService';
-import { CheckSquare } from '../../ui/square/Square.types';
 
 export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
   const dispatch = useDispatch();
@@ -63,17 +63,22 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
         (accumulator, currentValue) => accumulator + (currentValue.marked ? 1 : 0),
         0
       );
+
       if (markedCount === 3) {
         const markedSquaresIndexes: number[] = [];
         playBoard.map((square) => {
           if (square.marked) markedSquaresIndexes.push(square.row * 5 + square.column);
           return null;
         });
+
         const checkMarkedSquares = async () => {
           const markedSquares = await checkMarkedSquaresService(markedSquaresIndexes);
+
           markedSquares.forEach((item: CheckSquare) => {
-            dispatch(markSquare(item.index));
-            dispatch(flipSquare(item.index));
+            dispatch(flipSquares(item.index, item.status));
+            // dispatch(statusSquare(item.index, item.status));
+            // dispatch(markSquare(item.index));
+            // dispatch(flipSquare(item.index));
           });
           dispatch(increaseScore());
         };
