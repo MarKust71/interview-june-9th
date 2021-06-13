@@ -24,8 +24,6 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
     }
 
     case GameActionType.FLIP_SQUARES: {
-      // if (state.gameScore === undefined) return state;
-
       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
       const { squareIndex, squareStatus } = action.payload;
 
@@ -38,25 +36,8 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
         status: squareStatus,
       };
 
-      // return { ...state, playBoard: [...newPlayBoard], gameScore: state.gameScore + 1 };
       return { ...state, playBoard: [...newPlayBoard] };
     }
-
-    /*
-    case GameActionType.FLIP_SQUARE: {
-      const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
-      const { squareIndex } = action.payload;
-
-      if (squareIndex === undefined) return state;
-
-      newPlayBoard[squareIndex] = {
-        ...newPlayBoard[squareIndex],
-        revealed: !newPlayBoard[squareIndex].revealed,
-      };
-
-      return { ...state, playBoard: [...newPlayBoard] };
-    }
-*/
 
     case GameActionType.MARK_SQUARE: {
       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
@@ -71,23 +52,6 @@ export const gameReducer = (state: GameState = initialState, action: GameAction)
 
       return { ...state, playBoard: [...newPlayBoard] };
     }
-
-    /*
-     case GameActionType.STATUS_SQUARE: {
-       const newPlayBoard = state.playBoard ? [...state.playBoard] : [];
-       const { squareIndex, squareStatus } = action.payload;
-
-       if (squareIndex === undefined || squareStatus === undefined) return state;
-
-       newPlayBoard[squareIndex] = {
-         ...newPlayBoard[squareIndex],
-         marked: !newPlayBoard[squareIndex].revealed && !newPlayBoard[squareIndex].marked,
-         status: squareStatus,
-       };
-
-       return { ...state, playBoard: [...newPlayBoard] };
-     }
- */
 
     case GameActionType.TOGGLE_GAME_PENDING: {
       return { ...state, gameIsPending: !state.gameIsPending };

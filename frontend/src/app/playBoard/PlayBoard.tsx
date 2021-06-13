@@ -76,9 +76,6 @@ export const PlayBoard: React.FC<PlayBoardProps> = ({ playBoard = [] }) => {
 
           markedSquares.forEach((item: CheckSquare) => {
             dispatch(flipSquares(item.index, item.status));
-            // dispatch(statusSquare(item.index, item.status));
-            // dispatch(markSquare(item.index));
-            // dispatch(flipSquare(item.index));
           });
           dispatch(increaseScore());
         };

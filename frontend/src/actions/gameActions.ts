@@ -11,24 +11,10 @@ export const flipSquares = (squareIndex: number, squareStatus: SquareStatus): Ga
   payload: { squareIndex, squareStatus },
 });
 
-/*
-export const flipSquare = (squareIndex: number): GameAction => ({
-  type: GameActionType.FLIP_SQUARE,
-  payload: { squareIndex },
-});
-*/
-
 export const markSquare = (squareIndex: number): GameAction => ({
   type: GameActionType.MARK_SQUARE,
   payload: { squareIndex },
 });
-
-/*
-export const statusSquare = (squareIndex: number, squareStatus: SquareStatus): GameAction => ({
-  type: GameActionType.STATUS_SQUARE,
-  payload: { squareIndex, squareStatus },
-});
-*/
 
 export const increaseScore = (): GameAction => ({
   type: GameActionType.INCREASE_SCORE,
