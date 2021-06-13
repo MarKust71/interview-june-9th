@@ -45,7 +45,7 @@ export const db = () => {
   };
 
   const init = () => {
-    // empty the playboard, no treasures
+    // empty the playboard, no treasures, proximity 0
     const newPlayBoard = [...empty()];
 
     // place treasures on the playboard
@@ -63,21 +63,21 @@ export const db = () => {
       if (square.status === SquareStatus.TREASURE) {
         for (let distance = 1; distance < 4; ++distance) {
           // up
-          updatePlayBoard(newPlayBoard, square, distance, -1, 0);
+          updateProximity(newPlayBoard, square, distance, -1, 0);
           // down
-          updatePlayBoard(newPlayBoard, square, distance, 1, 0);
+          updateProximity(newPlayBoard, square, distance, 1, 0);
           // left
-          updatePlayBoard(newPlayBoard, square, distance, 0, -1);
+          updateProximity(newPlayBoard, square, distance, 0, -1);
           // right
-          updatePlayBoard(newPlayBoard, square, distance, 0, 1);
+          updateProximity(newPlayBoard, square, distance, 0, 1);
           // up-left
-          updatePlayBoard(newPlayBoard, square, distance, -1, -1);
+          updateProximity(newPlayBoard, square, distance, -1, -1);
           // up-right
-          updatePlayBoard(newPlayBoard, square, distance, -1, 1);
+          updateProximity(newPlayBoard, square, distance, -1, 1);
           // down-left
-          updatePlayBoard(newPlayBoard, square, distance, 1, -1);
+          updateProximity(newPlayBoard, square, distance, 1, -1);
           // down-right
-          updatePlayBoard(newPlayBoard, square, distance, 1, 1);
+          updateProximity(newPlayBoard, square, distance, 1, 1);
         }
       }
     });
@@ -91,7 +91,7 @@ export const db = () => {
   return { write, read, add, empty, init };
 };
 
-const updatePlayBoard = (
+const updateProximity = (
   playBoard: SquareType[],
   square: SquareType,
   distance: number,
