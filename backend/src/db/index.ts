@@ -1,8 +1,9 @@
 import { ScoreBoardItem } from '../model/scoreBoard.model';
-import { CheckSquare, SquareStatus, SquareType } from '../model/playBoard.model';
+import { CheckSquare, PlayBoardSnapshot, SquareStatus, SquareType } from '../model/playBoard.model';
 
 const scoreBoard: ScoreBoardItem[] = [];
 const playBoard: SquareType[] = [];
+const snapshots: PlayBoardSnapshot[] = [];
 
 export const db = () => {
   // ScoreBoard methods
@@ -95,7 +96,20 @@ export const db = () => {
     return [...response];
   };
 
-  return { write, read, add, empty, init, check };
+  const saveSnapshot = (data: PlayBoardSnapshot) => {
+    const newSnapshots = snapshots.filter((snapshot) => snapshot.name !== data.name);
+    newSnapshots.push(data);
+    snapshots.length = 0;
+    newSnapshots.map((snapshot) => snapshots.push(snapshot));
+  };
+
+  const deleteUserSnapshot = (user: string) => {
+    const newSnapshots = snapshots.filter((snapshot) => snapshot.name !== user);
+    snapshots.length = 0;
+    newSnapshots.map((snapshot) => snapshots.push(snapshot));
+  };
+
+  return { write, read, add, empty, init, check, saveSnapshot, deleteUserSnapshot };
 };
 
 const updateProximity = (
